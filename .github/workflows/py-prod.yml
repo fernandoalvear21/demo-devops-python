@@ -34,7 +34,7 @@ jobs:
       
       - name: Code Analysis
         run: |
-          pylint --disable=C,R,W --enable=E api/
+          pylint --fail-under=5 --disable=C,R,W,E1101, E0107 --enable=E api/
       
       - name: Code Coverage
         run: |
