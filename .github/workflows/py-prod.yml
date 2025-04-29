@@ -43,8 +43,7 @@ jobs:
       
       - name: Build & Push Docker Image
         run: |
-          docker build -t devsu-demo-python:${{github.sha }} .
-          docker tag devsu-demo-python:${{github.sha }} 
-          devsu-demo-python:latest
-          docker push devsu-demo-python:${{github.sha }}
+          docker build -t devsu-demo-python:${{ github.sha }} .
+          docker tag devsu-demo-python:${{ github.sha }} devsu-demo-python:latest
+          docker push devsu-demo-python:${{ github.sha }}
           docker push devsu-demo-python:latest
