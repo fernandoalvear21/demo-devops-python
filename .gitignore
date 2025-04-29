@@ -4,3 +4,11 @@
 __pycache__/
 
 db.sqlite3
+# Environment
+.env
+.venv
+env/
+venv/
+
+# Docker
+.docker/
