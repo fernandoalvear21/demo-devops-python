@@ -27,3 +27,24 @@ jobs:
         run: | 
           python -c "import django; print(django.__version__)"
           python manage.py check
+      
+      - name: Unit Tests
+        run: |
+          python manage.py test
+      
+      - name: Code Analysis
+        run: |
+          pylint api/
+      
+      - name: Code Coverage
+        run: |
+          coverage run manage.py test
+          coverage report
+      
+      - name: Build & Push Docker Image
+        run: |
+          docker build -t devsu-demo-python:${{github.sha }} .
+          docker tag devsu-demo-python:${{github.sha }} 
+          devsu-demo-python:latest
+          docker push devsu-demo-python:${{github.sha }}
+          docker push devsu-demo-python:latest
