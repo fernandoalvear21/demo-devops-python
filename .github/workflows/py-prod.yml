@@ -45,6 +45,9 @@ jobs:
         run: |
           echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v1
+      
       - name: Build & Push Docker Image
         env:
           DOCKER_REPO: ${{ secrets.DOCKER_USERNAME }}/devsu-demo-python
@@ -53,3 +56,9 @@ jobs:
           docker tag $DOCKER_REPO:${{ github.sha }} $DOCKER_REPO:latest
           docker push $DOCKER_REPO:${{ github.sha }}
           docker push $DOCKER_REPO:latest
+      
+      - name: Deployment Info
+        run: |
+          echo "Para desplegar en tu Kubernetes local:"
+          echo "1. Descarga la última imagen: docker pull ${{ secrets.DOCKER_USERNAME }}/devsu-demo-python:latest"
+          echo "2. Aplica las configuraciones: kubectl apply -f k8s/"
