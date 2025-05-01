@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devsu-demo-python
+spec:
+  replicas: 2 
+  selector:
+    matchLabels:
+      app: devsu-demo-python
+  template:
+    metadata:
+      labels:
+        app: devsu-demo-python
+    spec:
+      containers:
+      - name: devsu-demo-python
+        image: fernandoalvear/devsu-demo-python:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: devsu-demo-config
+        - secretRef:
+            name: devsu-demo-secret
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
