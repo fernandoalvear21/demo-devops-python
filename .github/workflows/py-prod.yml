@@ -57,31 +57,8 @@ jobs:
           docker push $DOCKER_REPO:${{ github.sha }}
           docker push $DOCKER_REPO:latest
       
-      - name: Generate Kubernetes configs
-        run: |
-          echo "Kubernetes configs are stored in repository"
-          
-      - name: Verify Kubernetes configs
-        run: |
-          kubectl apply --dry-run=client -f k8s/
-          
       - name: Deployment Info
         run: |
           echo "Para desplegar en tu Kubernetes local:"
           echo "1. Descarga la última imagen: docker pull ${{ secrets.DOCKER_USERNAME }}/devsu-demo-python:latest"
           echo "2. Aplica las configuraciones: kubectl apply -f k8s/"
-      
-      - name: Configure Kubernetes
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG }}
-      
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl apply -f k8s/configmap.yaml
-          kubectl apply -f k8s/secret.yaml
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/ingress.yaml
-          kubectl rollout restart deployment devsu-demo-python
